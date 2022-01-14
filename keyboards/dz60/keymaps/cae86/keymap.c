@@ -433,7 +433,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // F2, Alt+Enter, Ctrl+V, Ctrl+Enter
                 SEND_STRING(SS_TAP(X_F2)"=now()");
                 SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_ENT)SS_UP(X_LALT));
-                SEND_STRING(SS_LCTL("v")SS_TAP(X_ESC));
+                SEND_STRING(SS_LCTL("v"));
                 SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_ENT)SS_UP(X_LCTL));
             }
             break;
