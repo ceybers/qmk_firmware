@@ -1,6 +1,5 @@
 # Useful Excel Macros for QMK
 
-
 ## Macros
 
 | Key | Value |

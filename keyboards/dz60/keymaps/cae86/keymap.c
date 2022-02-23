@@ -2,8 +2,7 @@
 
 // Miryoku style layer tap/hold
 #define TH_CAPS  LT(_CAPS,    KC_CAPS)
-// OSL(_CTL)
-#define TH_GUI   KC_LGUI                 //LT(_GUI,     KC_LGUI) //LT(_ZFN, KC_ESC)
+#define TH_GUI   KC_LGUI                //LT(_GUI, KC_LGUI) //LT(_ZFN, KC_ESC)
 #define TH_ALT   LT(_ALT,     KC_LALT)  //LT(_SYM, KC_TAB)
 #define TH_LSFT  MT(MOD_LSFT, KC_SPC)
 #define TH_BSPC  LT(_BSPC,    KC_BSPC)
@@ -25,20 +24,20 @@
 // Extend selection
 #define SL_ALL    C(KC_A)     // Select all
 
-#define SL_BOF  C(S(KC_HOME)) // Select from cursor to Begin of File
-#define SL_HOME   S(KC_HOME)  // Select from cursor to start of Line
-#define SL_PADN C(S(KC_DN))   // Select from Cursor to end of Paragraph
+// #define SL_BOF  C(S(KC_HOME)) // Select from cursor to Begin of File
+// #define SL_HOME   S(KC_HOME)  // Select from cursor to start of Line
+// #define SL_PADN C(S(KC_DN))   // Select from Cursor to end of Paragraph
 #define SL_CLDN A(S(KC_DOWN)) // Select from Cursor one line down
-#define SL_WLFT C(S(KC_LEFT)) // Select from Cursor one word left
-#define SL_CLFT   S(KC_LEFT)  // Select from Cursor one character left
-//
-#define SL_CRGT   S(KC_RGHT)
-#define SL_WRGT C(S(KC_RGHT))
+// #define SL_WLFT C(S(KC_LEFT)) // Select from Cursor one word left
+// #define SL_CLFT   S(KC_LEFT)  // Select from Cursor one character left
+// 
+// #define SL_CRGT   S(KC_RGHT)
+// #define SL_WRGT C(S(KC_RGHT))
 #define SL_CLUP A(S(KC_UP))
-#define SL_PAUP C(S(KC_UP))
-#define SL_END    S(KC_END)
-#define SL_EOF  C(S(KC_END))
-//
+// #define SL_PAUP C(S(KC_UP))
+// #define SL_END    S(KC_END)
+// #define SL_EOF  C(S(KC_END))
+
 #define GO_HOME C(KC_HOME)
 #define GO_END  C(KC_END)
 
@@ -47,22 +46,16 @@
 #define SWAP_DN C(S(KC_DOWN))
 
 #define XL_HOME C(S(KC_HOME))
-#define XL_END C(S(KC_END))
-#define XL_COL C(KC_SPC)
-#define XL_ROW S(KC_SPC)
-#define XL_DRP A(KC_DOWN)
-
-// Teams
-#define TM_ACPT C(S(KC_S))
-#define TM_HANG C(S(KC_B))
-#define TM_MUTE C(S(KC_M))
-#define TM_SCRN C(S(KC_E))
-#define TM_TEAM G(KC_9)
+#define XL_END  C(S(KC_END))
+#define XL_COL    C(KC_SPC)
+#define XL_ROW    S(KC_SPC)
+#define XL_DRP    A(KC_DOWN)
+#define XL_BRK    C(KC_BRK)
 
 // clean up
 #define W_TSKMAN C(S(KC_ESC))
-#define W_EXPLR G(KC_E)
-#define W_ALTF4 A(KC_F4)
+#define W_EXPLR    G(KC_E)
+#define W_ALTF4    A(KC_F4)
 
 enum layer_names {
     _BASE,
@@ -106,14 +99,19 @@ enum custom_keycodes {
     XL_NOW,
     XL_APND,
     XL_REMVAL,
-    ZZZ,
     CE_JSFMT,
     ASC_DASH,
     ASC_BLORF,
     ASC_BJORN,
     ASC_EST,
     ASC_TM,
-    ASC_DEG
+    ASC_DEG,
+    ASC_DIA_A,
+    ASC_DIA_E,
+    ASC_DIA_I,
+    ASC_DIA_O,
+    ASC_DIA_U,
+    CE_BTICK
 };
 
 // Define variables for Super Alt+Tab
@@ -183,17 +181,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_CTL] = LAYOUT_directional(
-        KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    ASC_BJORN,ASC_DASH, ASC_EST,  ASC_TM,   RGB_TOG,
-        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    C(KC_T),  C(KC_Y),  KC_NO,    KC_NO,    XL_OPEN,  KC_NO,    ASC_BLORF,ASC_DEG,  KC_NO,
+        XL_BRK,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    RGB_TOG,
+        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    C(KC_T),  C(KC_Y),  KC_NO,    KC_NO,    XL_OPEN,  KC_NO,    KC_NO,    ASC_DEG,  KC_NO,
         KC_NO,              C(KC_A),  C(KC_S),  KC_NO,    C(KC_F),  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    XL_FLTAPL,XL_FLTCLR,          A(KC_SCLN),
         KC_NO,              C(KC_Z),  C(KC_X),  C(KC_C),  C(KC_V),  XL_ESV,   XL_EST,   KC_NO,    KC_NO,    XL_FLTEV, XL_FLTEE, XL_HOME,  XL_COL,   XL_FLT,
         KC_TRNS,    KC_NO,  KC_NO,    KC_NO,              KC_NO,              KC_NO,                        XL_FLTNB, XL_FLTBL, XL_ROW,   XL_DRP,   XL_END
     ),
 
     [_ALT] = LAYOUT_directional(
-        KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_NO,
+        KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    ASC_BJORN,ASC_DASH, ASC_EST,  ASC_TM,   KC_NLCK,
+        KC_NO,              KC_NO,    KC_NO,    ASC_DIA_E,KC_NO,    KC_NO,    KC_NO,    ASC_DIA_U,ASC_DIA_I,ASC_DIA_O,KC_NO,    KC_NO,    KC_NO,    KC_NO,
+        KC_NO,              ASC_DIA_A,KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_NO,
         KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    SWAP_DN,  SWAP_DN,  GO_HOME,  KC_PGUP,  GO_END,
         KC_NO,    KC_NO,    KC_TRNS,  KC_NO,              KC_NO,              KC_NO,                        SL_CLDN,  SL_CLUP,  KC_HOME,  KC_PGDN,  KC_END
     ), 
@@ -203,11 +201,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
         KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_NO,
         KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    C(KC_Z),  KC_NO,    C(KC_Y),
-        KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,            KC_NO,                        KC_NO,    KC_NO,    KC_BSPC,  KC_NO,    KC_DEL
+        KC_LCTL,  KC_NO,    KC_NO,    KC_NO,              KC_TRNS,            KC_NO,                        KC_NO,    KC_NO,    KC_BSPC,  KC_APP,   KC_DEL
     ),
 
     [_SFT] = LAYOUT_directional(
-        KC_NO,    KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_NO,    KC_PSCR,
+        CE_BTICK, KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_NO,    KC_PSCR,
         KC_NO,              KC_NO,    W_ALTF4,  W_EXPLR,  KC_NO,    W_TSKMAN, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
         KC_NO,              ALTTAB_L, KC_NO,    ALTTAB_R, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    G(KC_L),  KC_NO,    KC_NO,              KC_NO,
         KC_NO,              MM_LEFT,  KC_NO,    MM_RGHT,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_TRNS,
@@ -305,6 +303,12 @@ void run_initial_rgb_timer(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case CE_BTICK:
+            // Alt+E, S, V (Excel Paste Values)
+            if (record->event.pressed) {
+                SEND_STRING("``"SS_TAP(X_LEFT));
+            }
+            break;
         case XL_ESV:
             // Alt+E, S, V (Excel Paste Values)
             if (record->event.pressed) {
@@ -456,11 +460,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P1) SS_TAP(X_P5) SS_TAP(X_P1)SS_UP(X_LALT));
             }
             break;
-        case ASC_BLORF:
-            if (record->event.pressed) {
-                SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P2) SS_TAP(X_P4) SS_TAP(X_P6)SS_UP(X_LALT));
-            }
-            break;
         case ASC_BJORN:
             if (record->event.pressed) {
                 SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P2) SS_TAP(X_P4) SS_TAP(X_P8)SS_UP(X_LALT));
@@ -481,8 +480,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P1) SS_TAP(X_P7) SS_TAP(X_P6)SS_UP(X_LALT));
             }
             break;
-
+        // ASCII Diaeresis
+        case ASC_DIA_A:
+            if (record->event.pressed) {
+                SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P2) SS_TAP(X_P2) SS_TAP(X_P8)SS_UP(X_LALT));
+            }
+            break;
+        case ASC_DIA_E:
+            if (record->event.pressed) {
+                SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P2) SS_TAP(X_P3) SS_TAP(X_P5)SS_UP(X_LALT));
+            }
+            break;
+        case ASC_DIA_I:
+            if (record->event.pressed) {
+                SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P2) SS_TAP(X_P3) SS_TAP(X_P9)SS_UP(X_LALT));
+            }
+            break;
+        case ASC_DIA_O:
+            if (record->event.pressed) {
+                SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P2) SS_TAP(X_P4) SS_TAP(X_P6)SS_UP(X_LALT));
+            }
+            break;
+        case ASC_DIA_U:
+            if (record->event.pressed) {
+                SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P2) SS_TAP(X_P5) SS_TAP(X_P2)SS_UP(X_LALT));
+            }
+            break;
         // Window management
+        
         case W_LEFT:
             win_key_macro(record->event.pressed, KC_LEFT);
             break;
@@ -495,6 +520,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case W_RGHT:
             win_key_macro(record->event.pressed, KC_RGHT);
             break;
+        
         case MM_LEFT:
             if (record->event.pressed) {
                 SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LSFT)SS_TAP(X_LEFT)SS_UP(X_LSFT)SS_UP(X_LGUI));
@@ -505,9 +531,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LSFT)SS_TAP(X_RGHT)SS_UP(X_LSFT)SS_UP(X_LGUI));
             }
             break;
-        
-
+    
         //  Super Alt Tab
+        
         case ALTTAB_L:
            alt_tab_macro(record->event.pressed, false);
             break;
@@ -544,8 +570,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     rgblight_mode_noeeprom(1);
     switch (get_highest_layer(state)) {
-        case _BSPC:
-            rgblight_setrgb(RGB_ORANGE); //_CORAL
+        case _MIRY:
+            rgblight_setrgb(RGB_WHITE);
             break;
         case _CTL:
             rgblight_setrgb(RGB_TEAL);
@@ -553,19 +579,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         case _CAPS:
             rgblight_setrgb(RGB_SPRINGGREEN);
             break;
-/*         case _GUI:
-            rgblight_setrgb(RGB_GOLDENROD);
-            break; */
-        case _SFT:
-            //rgblight_setrgb(RGB_GOLDENROD);
-            rgblight_setrgb(RGB_GREEN);
+        case _BSPC:
+            rgblight_setrgb(RGB_ORANGE); //_CORAL
             break;
-/*         case _TEAM:
-            rgblight_setrgb(RGB_AZURE);
-            rgblight_mode_noeeprom(21);
-            break; */
-        case _MIRY:
-            rgblight_setrgb(RGB_WHITE);
+         case _ALT:
+            rgblight_setrgb(RGB_ORANGE);
+            break;
+        case _SFT:
+            rgblight_setrgb(RGB_GREEN);
             break;
         default: 
             rgblight_setrgb(RGB_AZURE);
