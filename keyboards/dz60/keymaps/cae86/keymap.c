@@ -1,14 +1,14 @@
 #include QMK_KEYBOARD_H
 
 // Miryoku style layer tap/hold
-#define TH_CAPS  LT(_CAPS,    KC_CAPS)
-#define TH_GUI   KC_LGUI                //LT(_GUI, KC_LGUI) //LT(_ZFN, KC_ESC)
-#define TH_ALT   LT(_ALT,     KC_LALT)  //LT(_SYM, KC_TAB)
-#define TH_LSFT  MT(MOD_LSFT, KC_SPC)
-#define TH_BSPC  LT(_BSPC,    KC_BSPC)
-#define TH_ENT   LT(_CAPS,    KC_ENT)  // LT(_NAV, KC_ENT)
-#define TH_DEL                KC_DEL   //LT(_GUI, KC_DEL)
-#define TH_RSFT  LT(_SFT,     KC_NO)
+#define TH_CAPS  LT(_CAPS,  KC_CAPS)
+#define TH_GUI   LT(_FN,    KC_LGUI) 
+#define TH_ALT   LT(_ALT,   KC_LALT)    //LT(_SYM, KC_TAB)
+#define TH_SPC              KC_SPC      //MT(MOD_LSFT, KC_SPC)
+#define TH_BSPC  LT(_BSPC,  KC_BSPC)
+#define TH_ENT              KC_ENT      //LT(_CAPS,    KC_ENT)  // LT(_NAV, KC_ENT)
+#define TH_DEL              KC_DEL      //LT(_GUI, KC_DEL)
+#define TH_RSFT  LT(_FN,    KC_RSFT)
 
 // Qwerty Homerow Mods
 #define HR_Q_A  LGUI_T(KC_A)
@@ -25,7 +25,7 @@
 #define SL_ALL    C(KC_A)     // Select all
 
 // #define SL_BOF  C(S(KC_HOME)) // Select from cursor to Begin of File
-// #define SL_HOME   S(KC_HOME)  // Select from cursor to start of Line
+#define SL_HOME   S(KC_HOME)  // Select from cursor to start of Line
 // #define SL_PADN C(S(KC_DN))   // Select from Cursor to end of Paragraph
 #define SL_CLDN A(S(KC_DOWN)) // Select from Cursor one line down
 // #define SL_WLFT C(S(KC_LEFT)) // Select from Cursor one word left
@@ -35,15 +35,15 @@
 // #define SL_WRGT C(S(KC_RGHT))
 #define SL_CLUP A(S(KC_UP))
 // #define SL_PAUP C(S(KC_UP))
-// #define SL_END    S(KC_END)
+#define SL_END    S(KC_END)
 // #define SL_EOF  C(S(KC_END))
 
 #define GO_HOME C(KC_HOME)
 #define GO_END  C(KC_END)
 
 // Swap current line(s)
-#define SWAP_UP C(S(KC_UP))
-#define SWAP_DN C(S(KC_DOWN))
+#define SWAP_UP A(KC_UP)
+#define SWAP_DN A(KC_DOWN)
 
 #define XL_HOME C(S(KC_HOME))
 #define XL_END  C(S(KC_END))
@@ -57,6 +57,20 @@
 #define W_EXPLR    G(KC_E)
 #define W_ALTF4    A(KC_F4)
 
+#define OS_GUI   OSM(MOD_LGUI)
+
+#define C_BSPC   C(KC_BSPC)
+#define C_DEL    C(KC_DEL)
+
+// VBA
+#define VBA_BRK C(KC_BRK)
+#define VBA_RUN KC_F5
+#define VBA_STP KC_F8
+#define VBA_PNT KC_F9
+#define VBA_OVR S(KC_F8)
+#define VBA_OUT C(S(KC_F8))
+#define VBA_CRS C(KC_F8)
+
 enum layer_names {
     _BASE,
     _MIRY,
@@ -64,7 +78,7 @@ enum layer_names {
     _CAPS,
     _BSPC,
     _ALT,
-    _SFT,
+    _FN,
 };
 
 enum custom_keycodes {
@@ -80,6 +94,7 @@ enum custom_keycodes {
     XL_ESV,
     XL_EST,
     XL_FLT,
+    XL_NEW,
     XL_OPEN,
     XL_ROWF,
     XL_COLF,
@@ -96,10 +111,12 @@ enum custom_keycodes {
     XL_RFSH,
     XL_HCPY,
     XL_RMROW,
+    XL_RMCOL,
     XL_NOW,
     XL_APND,
     XL_REMVAL,
     CE_JSFMT,
+    ASC_BULL,
     ASC_DASH,
     ASC_BLORF,
     ASC_BJORN,
@@ -111,7 +128,10 @@ enum custom_keycodes {
     ASC_DIA_I,
     ASC_DIA_O,
     ASC_DIA_U,
-    CE_BTICK
+    CE_BTICK,
+    WE_CMD,
+    WE_DIR,
+    WE_DIRS,
 };
 
 // Define variables for Super Alt+Tab
@@ -130,6 +150,7 @@ uint16_t DYNMAC_TIMER_MAX = 3000;
 
 uint16_t init_rgb_timer = 0;
 uint16_t INIT_RGB_MAX = 3000;
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
@@ -156,60 +177,60 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_GRV,   TG(_MIRY),
         KC_TAB,             KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
         KC_CAPS,            KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,            KC_ENT,
-        KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_NO,    KC_UP,    TH_RSFT,
+        KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  DM_PLY1,  KC_UP,    TH_RSFT,
         KC_LCTL,  KC_LGUI,  KC_LALT,  KC_SPC,             KC_BSPC,            KC_ENT,                       KC_APP,   KC_DEL,   KC_LEFT,  KC_DOWN,  KC_RGHT
         // CTL    WIN       n/a       Spc/Shift           Fun                 Pwr
         //        GUI       ALT       SPACE               BSCPC               ENTER
     ),
-
+    
     [_MIRY] = LAYOUT_directional(
-        KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  DM_REC1,
+        KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
         KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
         TH_CAPS,            HR_Q_A,   HR_Q_S,   HR_Q_D,   HR_Q_F,   KC_TRNS,  KC_TRNS,  HR_Q_J,   HR_Q_K,   HR_Q_L,   KC_TRNS,  KC_TRNS,            KC_TRNS,
-        KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  DM_PLY1,  KC_TRNS,  TH_RSFT,
-        OSL(_CTL),TH_GUI,   TH_ALT,   TH_LSFT,            TH_BSPC,            TH_ENT,                       KC_BSPC,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS
+        KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  TH_RSFT,
+        OSL(_CTL),TH_GUI,   TH_ALT,   TH_SPC,             TH_BSPC,            TH_ENT,                       KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS
         // CTL    WIN       n/a       Spc/Shift           Fun                 Pwr  
         //        GUI       ALT       SPACE               BSCPC               ENTER
     ),
     
     [_CAPS] = LAYOUT_directional(
         KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    C(A(KC_F5)),KC_NO,  KC_NO,    KC_NO,    S(KC_F9), KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-        KC_NO,              KC_NO,    KC_NO,    KC_NO,    XL_REMVAL,XL_NOW,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    XL_NOW,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
         KC_TRNS,            XL_APND,  KC_NO,    C(KC_SCLN),XL_FIXFX,C(S(KC_GRV)),KC_NO, CE_JSFMT, KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_NO,
         KC_NO,              KC_NO,    KC_NO,    XL_HCPY,  KC_NO,    KC_NO,    XL_NTBL,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    XL_COLF,  KC_NO,
-        KC_NO,    KC_NO,    KC_NO,    KC_NO,              XL_RMROW,           KC_NO,                        XL_RMROW, XL_NULL,  XL_ROWF,  XL_FILL,  KC_NO
+        KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_NO,              KC_NO,                        XL_NULL,  KC_NO,    XL_ROWF,  XL_FILL,  KC_NO
     ),
 
     [_CTL] = LAYOUT_directional(
-        XL_BRK,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    RGB_TOG,
-        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    C(KC_T),  C(KC_Y),  KC_NO,    KC_NO,    XL_OPEN,  KC_NO,    KC_NO,    ASC_DEG,  KC_NO,
-        KC_NO,              C(KC_A),  C(KC_S),  KC_NO,    C(KC_F),  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    XL_FLTAPL,XL_FLTCLR,          A(KC_SCLN),
-        KC_NO,              C(KC_Z),  C(KC_X),  C(KC_C),  C(KC_V),  XL_ESV,   XL_EST,   KC_NO,    KC_NO,    XL_FLTEV, XL_FLTEE, XL_HOME,  XL_COL,   XL_FLT,
-        KC_TRNS,    KC_NO,  KC_NO,    KC_NO,              KC_NO,              KC_NO,                        XL_FLTNB, XL_FLTBL, XL_ROW,   XL_DRP,   XL_END
+        XL_BRK,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    XL_FLTAPL,XL_FLTCLR,RGB_TOG,
+        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    C(KC_T),  C(KC_Y),  KC_NO,    KC_NO,    XL_OPEN,  KC_NO,    XL_FLTEV, XL_FLTEE, KC_NO,
+        KC_NO,              C(KC_A),  C(KC_S),  KC_NO,    C(KC_F),  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    XL_FLTNB, XL_FLTBL,           A(KC_SCLN),
+        KC_NO,              C(KC_Z),  C(KC_X),  C(KC_C),  C(KC_V),  KC_NO,    XL_NEW,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    XL_HOME,  XL_COL,   XL_FLT,
+        KC_TRNS,  KC_NO,    KC_NO,    KC_NO,              KC_NO,              KC_NO,                        XL_ESV,   XL_EST,   XL_ROW,   XL_DRP,   XL_END
     ),
 
-    [_ALT] = LAYOUT_directional(
-        KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    ASC_BJORN,ASC_DASH, ASC_EST,  ASC_TM,   KC_NLCK,
-        KC_NO,              KC_NO,    KC_NO,    ASC_DIA_E,KC_NO,    KC_NO,    KC_NO,    ASC_DIA_U,ASC_DIA_I,ASC_DIA_O,KC_NO,    KC_NO,    KC_NO,    KC_NO,
+    [_ALT] = LAYOUT_directional( 
+        KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    ASC_BULL, KC_NO,    ASC_BJORN,ASC_DASH, ASC_EST,  ASC_DEG,  KC_NLCK,
+        KC_NO,              KC_NO,    KC_NO,    ASC_DIA_E,KC_NO,    ASC_TM,   KC_NO,    ASC_DIA_U,ASC_DIA_I,ASC_DIA_O,KC_NO,    KC_NO,    KC_NO,    KC_NO,
         KC_NO,              ASC_DIA_A,KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_NO,
-        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    SWAP_DN,  SWAP_DN,  GO_HOME,  KC_PGUP,  GO_END,
-        KC_NO,    KC_NO,    KC_TRNS,  KC_NO,              KC_NO,              KC_NO,                        SL_CLDN,  SL_CLUP,  KC_HOME,  KC_PGDN,  KC_END
+        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    SWAP_UP,  SWAP_DN,  KC_NO,    GO_HOME,  KC_PGUP,  GO_END,
+        KC_NO,    KC_NO,    KC_TRNS,  SL_HOME,            KC_NO,              SL_END,                       SL_CLUP,  SL_CLDN,  KC_HOME,  KC_PGDN,  KC_END
     ), 
 
     [_BSPC] = LAYOUT_directional(
-        RESET,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    TG(_MIRY),
-        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+        RESET,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    CE_BTICK, DM_REC1,
+        KC_NO,              KC_NO,    KC_NO,    KC_NO,    XL_RMROW, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
         KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_NO,
-        KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    C(KC_Z),  KC_NO,    C(KC_Y),
-        KC_LCTL,  KC_NO,    KC_NO,    KC_NO,              KC_TRNS,            KC_NO,                        KC_NO,    KC_NO,    KC_BSPC,  KC_APP,   KC_DEL
+        KC_NO,              KC_NO,    KC_NO,    XL_RMCOL, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    C_BSPC,   KC_NO,    C_DEL,
+        KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,            KC_NO,                        C(KC_Z),  C(KC_Y),  KC_BSPC,  KC_NO,    KC_DEL
     ),
 
-    [_SFT] = LAYOUT_directional(
-        CE_BTICK, KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_NO,    KC_PSCR,
-        KC_NO,              KC_NO,    W_ALTF4,  W_EXPLR,  KC_NO,    W_TSKMAN, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-        KC_NO,              ALTTAB_L, KC_NO,    ALTTAB_R, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    G(KC_L),  KC_NO,    KC_NO,              KC_NO,
-        KC_NO,              MM_LEFT,  KC_NO,    MM_RGHT,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_TRNS,
-        KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_NO,              KC_NO,                        KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO
+    [_FN] = LAYOUT_directional( 
+        KC_NO,    KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_NO,    KC_PSCR,
+        KC_NO,              WE_CMD,   W_ALTF4,  W_EXPLR,  KC_NO,    W_TSKMAN, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    VBA_OVR,  VBA_OUT,  KC_NO,
+        KC_NO,              KC_LGUI,  KC_LALT,  KC_LSFT,  KC_LCTL,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    G(KC_L),  WE_DIR,   WE_DIRS,            KC_NO,
+        KC_NO,              VBA_BRK,  VBA_RUN,  VBA_STP,  VBA_PNT,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    VBA_CRS,  W_UP,     KC_NO,
+        OS_GUI,   KC_TRNS,  KC_APP,   MM_LEFT,            KC_NO,              MM_RGHT,                      ALTTAB_L, ALTTAB_R, W_LEFT,   W_DOWN,   W_RGHT
     ), 
 };
 
@@ -247,7 +268,7 @@ void alt_tab_macro(bool pressed, bool direction) {
 
 void check_alt_tab_timer(void) {
     if (is_alt_tab_active) { // Super Alt+Tab
-        if(!layer_state_is(_SFT)) {
+        if(!layer_state_is(_FN)) {
             unregister_code(KC_LALT);
             is_alt_tab_active = false;
             return;
@@ -298,13 +319,33 @@ void run_initial_rgb_timer(void) {
     if (runonce && timer_elapsed(init_rgb_timer) > INIT_RGB_MAX) {
         runonce = false;
         rgblight_setrgb(RGB_GOLD);
+        layer_on(_MIRY);
     }
 }
 
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case WE_CMD:
+            // In Windows Explorer, opens a command prompt in the current folder
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("l")"cmd"SS_TAP(X_ENT));
+            }
+            break;
+        case WE_DIR:
+            // In command prompt, copies the directory listing to the clipboard
+            if (record->event.pressed) {
+                SEND_STRING("dir /b | clip"SS_TAP(X_ENT));
+            }
+            break;
+        case WE_DIRS:
+            // In command prompt, copies the directory listing to the clipboard, recursively, files only
+            if (record->event.pressed) {
+                SEND_STRING("dir /b/s/a-d | clip"SS_TAP(X_ENT));
+            }
+            break;
         case CE_BTICK:
-            // Alt+E, S, V (Excel Paste Values)
+            // Dancing backticks
             if (record->event.pressed) {
                 SEND_STRING("``"SS_TAP(X_LEFT));
             }
@@ -322,9 +363,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case CE_JSFMT:
-            // Ctrl+A Ctrl+V Ctrl+Alt+M (JSFormat)
+            // Ctrl+A Ctrl+V Ctrl+Alt+M (JSFormat in Notepad++)
             if (record->event.pressed) {
                 SEND_STRING(SS_LCTL("av")SS_DOWN(X_LCTL)SS_DOWN(X_LALT)"m"SS_UP(X_LCTL)SS_UP(X_LALT));
+            }
+            break;
+        case XL_NEW:
+            // Alt+F N L (Excel File New)
+            if (record->event.pressed) {
+                SEND_STRING(SS_LALT("f")"nl");
             }
             break;
         case XL_OPEN:
@@ -340,53 +387,79 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case XL_FLTNB:
+            // Filter non blank values
+            // Works with general AND date columns
             if (record->event.pressed) {
-                SEND_STRING(SS_DOWN(X_LALT)SS_DOWN(X_LSFT)SS_TAP(X_DOWN)SS_UP(X_LSFT)SS_UP(X_LALT));
-                SEND_STRING("fn"SS_TAP(X_ENT));
+                //SEND_STRING(SS_DOWN(X_LALT)SS_DOWN(X_LSFT)SS_TAP(X_DOWN)SS_UP(X_LSFT)SS_UP(X_LALT));
+                //SEND_STRING("fn"SS_TAP(X_ENT));
+                SEND_STRING(SS_LALT(SS_LSFT(SS_TAP(X_DOWN)))"ff"SS_DELAY(100));
+                SEND_STRING(SS_LSFT(SS_TAP(X_TAB))SS_TAP(X_DOWN)SS_TAP(X_HOME)SS_DELAY(100));
+                SEND_STRING(SS_TAP(X_DOWN)SS_DELAY(100)SS_TAP(X_DOWN)SS_DELAY(100));
+                SEND_STRING(SS_TAP(X_ENT)SS_DELAY(100)SS_TAP(X_ENT)SS_DELAY(100));
             }
             break;
         case XL_FLTBL:
+            // Filter blank values only
+            // Works with general AND date columns
             if (record->event.pressed) {
-                SEND_STRING(SS_DOWN(X_LALT)SS_DOWN(X_LSFT)SS_TAP(X_DOWN)SS_UP(X_LSFT)SS_UP(X_LALT));
-                SEND_STRING("fe"SS_TAP(X_ENT));
+                //SEND_STRING(SS_DOWN(X_LALT)SS_DOWN(X_LSFT)SS_TAP(X_DOWN)SS_UP(X_LSFT)SS_UP(X_LALT));
+                //SEND_STRING("fe"SS_TAP(X_ENT));                
+                SEND_STRING(SS_LALT(SS_LSFT(SS_TAP(X_DOWN)))"ff"SS_DELAY(100));
+                SEND_STRING(SS_LSFT(SS_TAP(X_TAB))SS_TAP(X_DOWN)SS_TAP(X_HOME)SS_DELAY(100));
+                SEND_STRING(SS_TAP(X_DOWN)SS_DELAY(100));
+                SEND_STRING(SS_TAP(X_ENT)SS_DELAY(100)SS_TAP(X_ENT)SS_DELAY(100));
             }
             break;
         case XL_FLTEV:
+            // Filter selected value
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_APP)"ev");
             }
             break;
         case XL_FLTEE:
+            // Clear filter on column
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_APP)"ee");
             }
             break;
         case XL_FLTCLR:
+            // Clear all filters
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_LALT)"hsc");
             }
             break;
         case XL_FLTAPL:
+            // Filter re-apply
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_LALT)"hsy");
             }
             break;
         case XL_COLF:
+            // Reset column width to default
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_LALT)"how8.43"SS_TAP(X_ENT));
             }
             break;
         case XL_ROWF:
+            // Reset row height to default
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_LALT)"hoh15"SS_TAP(X_ENT));
             }
             break;
         case XL_RMROW:
+            // Delete row
             if (record->event.pressed) {
-                SEND_STRING(SS_TAP(X_APP)"dr");
+                SEND_STRING(SS_TAP(X_APP)"dr"SS_TAP(X_ENT));
+            }
+            break;
+        case XL_RMCOL:
+            // Delete col
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_LALT)"hdc"SS_TAP(X_ENT));
             }
             break;
         case XL_FILL:
+            // Fill values into selection
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_LALT)"hfid"SS_TAP(X_ENT));
             }
@@ -406,9 +479,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case XL_NTBL:
+            // New sheet, paste, new table
             if (record->event.pressed) {
-                SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_F11)SS_UP(X_LSFT));
-                SEND_STRING(SS_LCTL("vt")SS_TAP(X_ENT));
+                //SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_F11)SS_UP(X_LSFT));
+                SEND_STRING(SS_LCTL("c"));
+                SEND_STRING(SS_TAP(X_LALT)"his"SS_TAP(X_ENT)SS_DELAY(100));
+                SEND_STRING(SS_LCTL("v")SS_TAP(X_ESC)SS_DELAY(100));
+                SEND_STRING(SS_LCTL("t")SS_TAP(X_ENT)SS_DELAY(100));
+                SEND_STRING(SS_TAP(X_LALT)"jts"SS_DELAY(100)SS_TAP(X_RGHT)SS_TAP(X_RGHT)SS_TAP(X_RGHT)SS_TAP(X_RGHT)SS_DELAY(100)SS_TAP(X_APP)"c");
+                SEND_STRING(SS_TAP(X_LALT)"how8.43"SS_TAP(X_ENT));
+                SEND_STRING(SS_TAP(X_LALT)"hoh15"SS_TAP(X_ENT));
             }
             break;
         case XL_RFSH:
@@ -417,6 +497,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case XL_HCPY:
+            // "Hard" copy
             if (record->event.pressed) {
                 SEND_STRING(SS_DOWN(X_F2));
                 SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_TAP(X_HOME)SS_UP(X_LSFT)SS_UP(X_LCTL));
@@ -424,6 +505,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case XL_NOW:
+            // Paste current time as value not formula
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_DEL)"=now()");
                 SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_ENT)SS_UP(X_LCTL));
@@ -432,10 +514,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case XL_APND:
+            // Append into currently selected cell
             if (record->event.pressed) {
                 // Append clipboard to end of current cell
                 // F2, Alt+Enter, Ctrl+V, Ctrl+Enter
-                SEND_STRING(SS_TAP(X_F2)"=now()");
+                SEND_STRING(SS_TAP(X_F2));
                 SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_ENT)SS_UP(X_LALT));
                 SEND_STRING(SS_LCTL("v"));
                 SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_ENT)SS_UP(X_LCTL));
@@ -455,6 +538,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         // ASCII Stuff
+        case ASC_BULL:
+            if (record->event.pressed) {
+                SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P1) SS_TAP(X_P4) SS_TAP(X_P9)SS_UP(X_LALT));
+            }
+            break;
         case ASC_DASH:
             if (record->event.pressed) {
                 SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_P0) SS_TAP(X_P1) SS_TAP(X_P5) SS_TAP(X_P1)SS_UP(X_LALT));
@@ -533,7 +621,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
     
         //  Super Alt Tab
-        
         case ALTTAB_L:
            alt_tab_macro(record->event.pressed, false);
             break;
@@ -569,6 +656,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     if (is_dynmac_busy) return state;
 
     rgblight_mode_noeeprom(1);
+
     switch (get_highest_layer(state)) {
         case _MIRY:
             rgblight_setrgb(RGB_WHITE);
@@ -585,11 +673,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
          case _ALT:
             rgblight_setrgb(RGB_ORANGE);
             break;
-        case _SFT:
+        case _FN:
             rgblight_setrgb(RGB_GREEN);
             break;
         default: 
-            rgblight_setrgb(RGB_AZURE);
+            rgblight_setrgb(RGB_GOLD);
             break;
     }
     return state;
